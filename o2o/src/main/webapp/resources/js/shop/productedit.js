@@ -24,6 +24,7 @@ $(function() {
                         $('#product-name').val(product.productName);
                         $('#product-desc').val(product.productDesc);
                         $('#priority').val(product.priority);
+                        $('#point').val(product.point);
                         $('#normal-price').val(product.normalPrice);
                         $('#promotion-price').val(
                             product.promotionPrice);

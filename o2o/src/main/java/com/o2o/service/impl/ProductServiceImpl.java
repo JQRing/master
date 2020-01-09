@@ -11,6 +11,7 @@ import com.o2o.enums.ProductStateEnum;
 import com.o2o.exceptions.ProductOperationException;
 import com.o2o.service.ProductService;
 import com.o2o.util.ImageUtil;
+import com.o2o.util.PageCalculator;
 import com.o2o.util.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
      * 往tb_product写入商品信息，获取productId
      * 结合productId批量处理商品详情图
      * 将商品详情图列表批量插入tb_product_img表
+     *
      * @param product
      * @param thumbnail
      * @return
@@ -77,7 +79,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductExecution getProductList(Product productCondition, int pageIndex, int pageSize) {
-        return null;
+        // 页码转换成数据库的行码，并且调用dao层返回指定页码的商品列表
+        int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+        List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
+        // 基于同样的查询条件返回该查询条件下的商品总数
+        int count = productDao.queryProductCount(productCondition);
+        ProductExecution pe = new ProductExecution();
+        pe.setProductList(productList);
+        pe.setCount(count);
+        return pe;
     }
 
     @Override
@@ -91,6 +101,7 @@ public class ProductServiceImpl implements ProductService {
      * 2、若商品详情图列表有值，则进行同样的操作
      * 3、将tb_product_img下的该商品原先的商品详情图记录全部删除
      * 4、更新tb_product的信息
+     *
      * @param product
      * @param thumbnail
      * @param productImgs
@@ -135,30 +146,31 @@ public class ProductServiceImpl implements ProductService {
 
     private void addProductImgs(Product product, List<ImageHolder> productImgs) {
         String dest = PathUtil.getShopImagePath(product.getShop().getShopId());
-            List<ProductImg> productImgList = new ArrayList<ProductImg>();
-            for (ImageHolder imageHolder : productImgs) {
-                String imgAddr = ImageUtil.generateNormalImg(imageHolder, dest);
-                ProductImg productImg = new ProductImg();
-                productImg.setImgAddr(imgAddr);
-                productImg.setProductId(product.getProductId());
-                productImg.setCreateTime(new Date());
-                productImgList.add(productImg);
-            }
-            if (productImgs.size() > 0){
-                try {
-                    int effectedNum = productImgDao.batchInsertProductImg(productImgList);
-                    if (effectedNum <= 0) {
-                        throw new RuntimeException("创建商品详情图片失败");
-                    }
-                } catch (Exception e) {
-                    throw new RuntimeException("创建商品详情图片失败:" + e.toString());
+        List<ProductImg> productImgList = new ArrayList<ProductImg>();
+        for (ImageHolder imageHolder : productImgs) {
+            String imgAddr = ImageUtil.generateNormalImg(imageHolder, dest);
+            ProductImg productImg = new ProductImg();
+            productImg.setImgAddr(imgAddr);
+            productImg.setProductId(product.getProductId());
+            productImg.setCreateTime(new Date());
+            productImgList.add(productImg);
+        }
+        if (productImgs.size() > 0) {
+            try {
+                int effectedNum = productImgDao.batchInsertProductImg(productImgList);
+                if (effectedNum <= 0) {
+                    throw new RuntimeException("创建商品详情图片失败");
                 }
+            } catch (Exception e) {
+                throw new RuntimeException("创建商品详情图片失败:" + e.toString());
             }
+        }
 //        }
     }
 
     /**
      * 删除某个商品下的所有详情图
+     *
      * @param productId
      */
     private void deleteProductImgs(long productId) {
@@ -174,6 +186,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 添加商品缩略图
+     *
      * @param product
      * @param imageHolder
      */
@@ -185,6 +198,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 添加商品详情图
+     *
      * @param product
      * @param productImgHolderList
      */

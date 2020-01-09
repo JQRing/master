@@ -4,10 +4,12 @@ import java.util.Date;
 
 public class LocalAuth {
     private Long localAuthId;
+    private Long userId;
     private String username;
     private String password;
     private Date createTime;
     private Date lastEditTime;
+    // 个人信息，关系为一一对应
     private PersonInfo personInfo;
 
     public Long getLocalAuthId() {
@@ -16,6 +18,14 @@ public class LocalAuth {
 
     public void setLocalAuthId(Long localAuthId) {
         this.localAuthId = localAuthId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {

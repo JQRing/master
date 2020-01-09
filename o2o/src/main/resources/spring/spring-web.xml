@@ -50,49 +50,41 @@
     <!-- 4.扫描web相关的bean -->
     <context:component-scan base-package="com.o2o.web" />
     <!-- 5.权限拦截器 -->
-    <!--<mvc:interceptors>
+    <mvc:interceptors>
+        <!-- 校验是否已登录了店家管理系统的拦截器 -->
         <mvc:interceptor>
-            <mvc:mapping path="/shop/**" />
-            <mvc:exclude-mapping path="/shop/ownerlogin" />
-            <mvc:exclude-mapping path="/shop/ownerlogincheck" />
-            <mvc:exclude-mapping path="/shop/logout" />
-            <mvc:exclude-mapping path="/shop/register" />
-            <bean id="ShopInterceptor" class="com.imooc.myo2o.interceptor.shop.ShopLoginInterceptor" />
+            <mvc:mapping path="/shopadmin/**" />
+            <mvc:exclude-mapping path="/shopadmin/ownerlogin" />
+            <mvc:exclude-mapping path="/shopadmin/ownerlogincheck" />
+            <mvc:exclude-mapping path="/shopadmin/logout" />
+            <mvc:exclude-mapping path="/shopadmin/register" />
+            <bean id="ShopInterceptor" class="com.o2o.interceptor.shopadmin.ShopLoginInterceptor" />
         </mvc:interceptor>
+        <!-- 校验是否对该店铺有操作权限的拦截器 -->
         <mvc:interceptor>
-            <mvc:mapping path="/shop/**" />
-            <mvc:exclude-mapping path="/shop/ownerlogin" />
-            <mvc:exclude-mapping path="/shop/ownerlogincheck" />
-            <mvc:exclude-mapping path="/shop/register" />
-            &lt;!&ndash; shoplist page &ndash;&gt;
-            <mvc:exclude-mapping path="/shop/shoplist" />
-            <mvc:exclude-mapping path="/shop/logout" />
-            <mvc:exclude-mapping path="/shop/list" />
-            &lt;!&ndash; changepsw page &ndash;&gt;
-            <mvc:exclude-mapping path="/shop/changepsw" />
-            <mvc:exclude-mapping path="/shop/changelocalpwd" />
-            &lt;!&ndash; ownerbind page &ndash;&gt;
-            <mvc:exclude-mapping path="/shop/ownerbind" />
-            <mvc:exclude-mapping path="/shop/bindlocalauth" />
-            &lt;!&ndash; shopmanage page &ndash;&gt;
-            <mvc:exclude-mapping path="/shop/shopmanage" />
-            &lt;!&ndash; shopedit page &ndash;&gt;
-            <mvc:exclude-mapping path="/shop/shopedit" />
-            <mvc:exclude-mapping path="/shop/getshopbyid" />
-            <mvc:exclude-mapping path="/shop/getshopinitinfo" />
-            <mvc:exclude-mapping path="/shop/registershop" />
+            <mvc:mapping path="/superadmin/**" />
+            <!-- shoplist page -->
+            <mvc:exclude-mapping path="/shopadmin/shoplist" />
+            <mvc:exclude-mapping path="/shopadmin/getshoplist" />
+            <!-- shopmanage page -->
+            <mvc:exclude-mapping path="/shopadmin/shopmanagement" />
+            <mvc:exclude-mapping path="/shopadmin/getshopmanagementinfo" />
+            <!-- shopedit page -->
+            <mvc:exclude-mapping path="/shopadmin/shopedit" />
+            <mvc:exclude-mapping path="/shopadmin/getshopinitinfo" />
+            <mvc:exclude-mapping path="/shopadmin/registershop" />
             <bean id="ShopPermissionInterceptor"
-                  class="com.imooc.myo2o.interceptor.shop.ShopPermissionInterceptor" />
+                  class="com.o2o.interceptor.shopadmin.ShopPermissionInterceptor" />
         </mvc:interceptor>
-        <mvc:interceptor>
+        <!--<mvc:interceptor>
             <mvc:mapping path="/superadmin/**" />
             <mvc:exclude-mapping path="/superadmin/login" />
             <mvc:exclude-mapping path="/superadmin/logincheck" />
             <mvc:exclude-mapping path="/superadmin/main" />
             <mvc:exclude-mapping path="/superadmin/top" />
             <bean id="SuperAdminInterceptor"
-                  class="com.imooc.myo2o.interceptor.superadmin.SuperAdminLoginInterceptor" />
-        </mvc:interceptor>
+                  class="com.o2o.interceptor.superadmin.SuperAdminLoginInterceptor" />
+        </mvc:interceptor>-->
 
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 </beans>

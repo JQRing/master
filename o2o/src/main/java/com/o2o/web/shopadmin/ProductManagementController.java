@@ -46,6 +46,50 @@ public class ProductManagementController {
     // 支持最大上传图片数
     private static final int IMAGEMAXCOUNT = 6;
 
+    @RequestMapping(value = "/getproductlistbyshop", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getProductListByShop(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<>();
+        // 获取前台传过来的页码
+        int pageIndex = HttpServletRequestUtils.getInt(request, "pageIndex");
+        int pageSize = HttpServletRequestUtils.getInt(request, "pageSize");
+        // 从session中获取店铺信息
+        Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+        if ((pageIndex > -1) && (pageSize > -1) && (currentShop != null) && (currentShop.getShopId() != null)) {
+            // 获取检索条件， 筛选的条件可以进行排列组合
+            long productCategoryId = HttpServletRequestUtils.getLong(request, "productCategoryId");
+            String productName = HttpServletRequestUtils.getString(request, "productName");
+            Product productCondition = compactProductCondition(currentShop.getShopId(), productCategoryId, productName);
+            // 传入查询条件及分页信息进行查询，返回相应列表及总数
+            ProductExecution pe = productService.getProductList(productCondition, pageIndex, pageSize);
+            modelMap.put("productList", pe.getProductList());
+            modelMap.put("count", pe.getCount());
+            modelMap.put("success", true);
+        } else {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "empty pageSize or pageIndex or shopId");
+        }
+        return modelMap;
+    }
+
+    private Product compactProductCondition(Long shopId, long productCategoryId, String productName) {
+        Product productCondition = new Product();
+        Shop shop = new Shop();
+        shop.setShopId(shopId);
+        productCondition.setShop(shop);
+        // 若有指定类别的要求则添加
+        if (productCategoryId != -1L) {
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.setProductCategoryId(productCategoryId);
+            productCondition.setProductCategory(productCategory);
+        }
+        // 若有商品模糊查询则添加进去
+        if (productName != null) {
+            productCondition.setProductName(productName);
+        }
+        return productCondition;
+    }
+
     @RequestMapping(value = "/addproduct", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> addProduct(HttpServletRequest request) {

@@ -12,7 +12,7 @@ public class ProductExecution {
     // 状态标识
     private String stateInfo;
 
-    // 店铺数量
+    // 商品数量
     private int count;
 
     // 操作的product（增删改商品的时候用）

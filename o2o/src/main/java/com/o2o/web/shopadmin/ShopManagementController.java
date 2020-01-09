@@ -13,8 +13,6 @@ import com.o2o.service.ShopCategoryService;
 import com.o2o.service.ShopService;
 import com.o2o.util.CodeUtil;
 import com.o2o.util.HttpServletRequestUtils;
-import com.o2o.util.ImageUtil;
-import com.o2o.util.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +23,11 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/shopadmin")
@@ -212,10 +213,11 @@ public class ShopManagementController {
     @ResponseBody
     public Map<String, Object> getShopList(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<>();
-        PersonInfo user = new PersonInfo();
-        user.setUserId(1L);
-        request.getSession().setAttribute("user", user);
-        user = (PersonInfo) request.getSession().getAttribute("user");
+        // TODO
+//        PersonInfo user = new PersonInfo();
+//        user.setUserId(8L);
+//        request.getSession().setAttribute("user", user);
+        PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
         try {
             Shop shopCondition = new Shop();
             shopCondition.setOwner(user);

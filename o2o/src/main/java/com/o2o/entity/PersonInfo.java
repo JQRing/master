@@ -6,7 +6,7 @@ public class PersonInfo {
     private Long userId;
     private String name;
     private String profileImg;
-    private String emial;
+    private String email;
     private String gender;
     private Integer enableStatus;
     private Integer userType;  // 1.顾客 2.店家 3.超级管理员
@@ -37,12 +37,12 @@ public class PersonInfo {
         this.profileImg = profileImg;
     }
 
-    public String getEmial() {
-        return emial;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmial(String emial) {
-        this.emial = emial;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getGender() {

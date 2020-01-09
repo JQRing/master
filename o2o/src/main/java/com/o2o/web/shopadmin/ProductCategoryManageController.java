@@ -35,7 +35,7 @@ public class ProductCategoryManageController {
     public Result<List<ProductCategory>> getProductCategoryList(HttpServletRequest request) {
         // TODO
         Shop shop = new Shop();
-        shop.setShopId(7L);
+        shop.setShopId(20L);
         request.getSession().setAttribute("currentShop", shop);
 
         Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");

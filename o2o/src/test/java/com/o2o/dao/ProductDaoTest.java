@@ -71,7 +71,7 @@ public class ProductDaoTest extends BaseTest {
         assertEquals(1, effectedNum);
     }
 
-    /*@Test
+    @Test
     public void testBQueryProductList() throws Exception {
         Product product = new Product();
         List<Product> productList = productDao.queryProductList(product, 0, 3);
@@ -92,7 +92,7 @@ public class ProductDaoTest extends BaseTest {
         assertEquals(1, count);
     }
 
-    @Test
+    /*@Test
     public void testCQueryProductByProductId() throws Exception {
         long productId = 1;
         ProductImg productImg1 = new ProductImg();

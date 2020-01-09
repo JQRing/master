@@ -1,9 +1,7 @@
 package com.o2o.web.shopadmin;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "shopadmin")
@@ -34,4 +32,8 @@ public class ShopAdminController {
         return "shop/productedit";
     }
 
+    @RequestMapping(value = "/productmanagement")
+    public String productManagement() {
+        return "shop/productmanagement";
+    }
 }
